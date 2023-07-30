@@ -7,8 +7,8 @@ import Navbar from '@/components/navbar'
 const font = Urbanist({subsets: ['latin']})
 
 export const metadata: Metadata = {
-  title: 'Store',
-  description: 'Store',
+  title: 'Nhà Quê Shop',
+  description: 'A place to find you dream',
 }
 
 export default function RootLayout({
