@@ -5,8 +5,9 @@ import { Urbanist } from 'next/font/google'
 import Navbar from '@/components/navbar'
 import ModalProvider from '@/providers/modal-provider'
 import ToastProvider from '@/providers/toast-provider'
+import { SessionProvider } from 'next-auth/react'
 
-const font = Urbanist({subsets: ['latin']})
+const font = Urbanist({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Nhà Quê Shop',
@@ -21,11 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-        <ModalProvider />
-        <ToastProvider />
-        <Navbar />
-        {children}
-        <Footer />
+        <SessionProvider session={session}>
+          <ModalProvider />
+          <ToastProvider />
+          <Navbar />
+          {children}
+          <Footer />
+        </SessionProvider>
       </body>
     </html>
   )
