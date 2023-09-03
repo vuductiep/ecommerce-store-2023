@@ -1,17 +1,17 @@
-import NextAuth from "next-auth"
+import type { NextAuthOptions } from "next-auth"
 import GithubProvider from "next-auth/providers/github"
-export const authOptions = {
+import GoogleProvider from "next-auth/providers/google"
+import CredentialsProvider from "next-auth/providers/credentials"
+import bcrypt from 'bcrypt'
+
+export const authOptions : NextAuthOptions = {
   // Configure one or more authentication providers
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
     CredentialsProvider({
       name: 'credentials',
       credentials: {
-        email: {label: 'email', type: 'text'},
-        password: {label: 'password', type: 'password'}
+        email: {label: 'Email', type: 'text'},
+        password: {label: 'Password', type: 'password'}
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -39,8 +39,19 @@ export const authOptions = {
 
         return user
       }
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
+    }),
+    GithubProvider({
+      clientId: process.env.GITHUB_ID as string,
+      clientSecret: process.env.GITHUB_SECRET as string
     })
   ],
+  
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
 }
-export default NextAuth(authOptions)
-
